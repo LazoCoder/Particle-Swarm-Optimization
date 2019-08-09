@@ -1,5 +1,3 @@
-//import Particle.FunctionType;
-
 import java.util.Random;
 
 /**
