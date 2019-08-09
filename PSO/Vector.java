@@ -1,92 +1,75 @@
-package PSO;
+import java.util.Arrays;
 
 /**
  * Can represent a position as well as a velocity.
  */
 class Vector {
 
-    private double x, y, z;
+    double[] values;
+    private double init_value;
     private double limit = Double.MAX_VALUE;
 
-    Vector () {
-        this(0, 0, 0);
+    Vector (int variables, double init_value) {
+        this.init_value = init_value;
+        values = new double[variables];
+        for(int i = 0; i < variables; i++){
+            values[i] = init_value;
+        }
     }
 
-    Vector (double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    double getX () {
-        return x;
-    }
-
-    double getY () {
-        return y;
-    }
-
-    double getZ () {
-        return z;
-    }
-
-    void set (double x, double y, double z) {
-        setX(x);
-        setY(y);
-        setZ(z);
-    }
-
-    private void setX (double x) {
-        this.x = x;
-    }
-
-    private void setY (double y) {
-        this.y = y;
-    }
-
-    private void setZ (double z) {
-        this.z = z;
+    double[] get(){
+        return values;
     }
 
     void add (Vector v) {
-        x += v.x;
-        y += v.y;
-        z += v.z;
+        for(int i = 0; i < values.length; i++){
+            this.values[i] += v.values[i];
+        }
         limit();
     }
 
     void sub (Vector v) {
-        x -= v.x;
-        y -= v.y;
-        z -= v.z;
+        for(int i = 0; i < values.length; i++){
+            this.values[i] -= v.values[i];
+        }
         limit();
     }
 
     void mul (double s) {
-        x *= s;
-        y *= s;
-        z *= s;
+        for(int i = 0; i < values.length; i++){
+            this.values[i] *= s;
+        }
         limit();
     }
 
     void div (double s) {
-        x /= s;
-        y /= s;
-        z /= s;
+        for(int i = 0; i < values.length; i++){
+            this.values[i] /= s;
+        }
         limit();
     }
 
     void normalize () {
         double m = mag();
         if (m > 0) {
-            x /= m;
-            y /= m;
-            z /= m;
+            for(int i = 0; i < values.length; i++){
+                this.values[i] /= m;
+            }
         }
     }
 
+    private double SumOfSquares(){
+        double sum = 0;
+
+        for (double value : values) {
+            sum += value * value;
+        }
+
+        return sum;
+    }
+
     private double mag () {
-        return Math.sqrt(x*x + y*y);
+        return Math.sqrt(SumOfSquares());
     }
 
     void limit (double l) {
@@ -98,17 +81,24 @@ class Vector {
         double m = mag();
         if (m > limit) {
             double ratio = m / limit;
-            x /= ratio;
-            y /= ratio;
+            for(int i = 0; i < values.length; i++){
+                this.values[i] /= ratio;
+            }
         }
     }
 
     public Vector clone () {
-        return new Vector(x, y, z);
+        Vector temp = new Vector(values.length, init_value);
+
+        for(int i = 0; i < values.length; i++){
+            temp.values[i] = values[i];
+        }
+
+        return temp;
     }
 
     public String toString () {
-        return "(" + x + ", " + y + ", " + z + ")";
+        return Arrays.toString(this.values);
     }
 
 }

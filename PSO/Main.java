@@ -1,5 +1,3 @@
-package PSO;
-
 import java.util.Scanner;
 
 public class Main {
@@ -21,21 +19,21 @@ public class Main {
     private static void menu (boolean flag) {
         Swarm swarm;
         Particle.FunctionType function;
-        int particles, epochs;
+        int particles, epochs, variables;
         double inertia, cognitive, social;
 
         function = getFunction();
         particles = getUserInt("Particles: ");
         epochs = getUserInt("Epochs:    ");
+        variables = getUserInt("Variables:    ");
 
         if (flag) {
             inertia = getUserDouble("Inertia:   ");
             cognitive = getUserDouble("Cognitive: ");
             social = getUserDouble("Social:    ");
-            swarm = new Swarm(function, particles, epochs, inertia, cognitive, social);
+            swarm = new Swarm(function, particles, epochs, variables, inertia, cognitive, social);
         } else {
-            swarm = new Swarm(function, particles, epochs);
-
+            swarm = new Swarm(function, particles, epochs, variables);
         }
 
         swarm.run();
@@ -108,6 +106,7 @@ public class Main {
         System.out.println("2. Ackley's Function");
         System.out.println("3. Booth's Function");
         System.out.println("4. Three Hump Camel Function");
+        System.out.println("5. Sphere Function");
         System.out.print("Function:  ");
     }
 
@@ -116,6 +115,7 @@ public class Main {
         else if (input == 2)    return Particle.FunctionType.Ackleys;
         else if (input == 3)    return Particle.FunctionType.Booths;
         else if (input == 4)    return Particle.FunctionType.ThreeHumpCamel;
+        else if (input == 5)    return Particle.FunctionType.Sphere;
         System.out.println("Invalid Input.");
         return null;
     }
