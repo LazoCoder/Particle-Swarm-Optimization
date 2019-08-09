@@ -1,5 +1,3 @@
-package PSO;
-
 import java.util.Random;
 
 /**
@@ -18,13 +16,13 @@ class Particle {
      * @param beginRange    the minimum xyz values of the position (inclusive)
      * @param endRange      the maximum xyz values of the position (exclusive)
      */
-    Particle (FunctionType function, int beginRange, int endRange) {
+    Particle (FunctionType function, int beginRange, int endRange, int variables) {
         if (beginRange >= endRange) {
             throw new IllegalArgumentException("Begin range must be less than end range.");
         }
         this.function = function;
-        position = new Vector();
-        velocity = new Vector();
+        position = new Vector(variables, 0);
+        velocity = new Vector(variables, 0);
         setRandomPosition(beginRange, endRange);
         bestPosition = velocity.clone();
         bestEval = eval();
@@ -36,21 +34,22 @@ class Particle {
      */
     private double eval () {
         if (function == FunctionType.FunctionA) {
-            return Function.functionA(position.getX());
+            return Function.functionA(position.get());
         } else if (function == FunctionType.Ackleys) {
-            return Function.ackleysFunction(position.getX(), position.getY());
+            return Function.ackleysFunction(position.get());
         } else if (function == FunctionType.Booths) {
-            return Function.boothsFunction(position.getX(), position.getY());
+            return Function.boothsFunction(position.get());
+        } else if (function == FunctionType.Sphere) {
+            return Function.sphereFunction(position.get());
         } else {
-            return Function.threeHumpCamelFunction(position.getX(), position.getY());
+            return Function.threeHumpCamelFunction(position.get());
         }
     }
 
     private void setRandomPosition (int beginRange, int endRange) {
-        int x = rand(beginRange, endRange);
-        int y = rand(beginRange, endRange);
-        int z = rand(beginRange, endRange);
-        position.set(x, y, z);
+        for(int i = 0; i < position.values.length; i++){
+            position.values[i] = rand(beginRange, endRange);
+        }
     }
 
     /**
@@ -126,7 +125,8 @@ class Particle {
         FunctionA,
         Ackleys,
         Booths,
-        ThreeHumpCamel
+        ThreeHumpCamel,
+        Sphere,
     }
 
 }
