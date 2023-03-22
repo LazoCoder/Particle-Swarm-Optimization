@@ -5,8 +5,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main (String[] args) {
+        boolean flag=false;
         if (args.length == 1 && args[0].equals("-p")) {
-            menu(true);
+            flag=true;
         } else {
             System.out.print("Use the parameter '-p' to change the inertia, ");
             System.out.println("cognitive and social components.");
@@ -14,8 +15,8 @@ public class Main {
             System.out.println("Inertia:             " + Swarm.DEFAULT_INERTIA);
             System.out.println("Cognitive Component: " + Swarm.DEFAULT_COGNITIVE);
             System.out.println("Social Component:    " + Swarm.DEFAULT_SOCIAL);
-            menu(false);
         }
+        menu(flag);
     }
 
     private static void menu (boolean flag) {
